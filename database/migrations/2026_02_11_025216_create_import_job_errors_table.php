@@ -1,0 +1,19 @@
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+  public function up(): void {
+    Schema::create('import_job_errors', function(Blueprint $table){
+      $table->id();
+      $table->foreignId('import_job_id')->constrained()->cascadeOnDelete();
+      $table->unsignedInteger('row_number');
+      $table->string('student_code',50)->nullable();
+      $table->string('error',255);
+      $table->json('raw_row')->nullable();
+      $table->timestamps();
+    });
+  }
+  public function down(): void { Schema::dropIfExists('import_job_errors'); }
+};
