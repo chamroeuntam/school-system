@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\OtpLoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminResetController;
 use App\Http\Controllers\Admin\UserManagementController;
 
@@ -26,7 +27,12 @@ use App\Http\Controllers\design;
 | PUBLIC ROUTES (No auth)
 |--------------------------------------------------------------------------
 */
-Route::get('/', [design::class, 'index'])->name('home');
+Route::get('/', function () {
+    return view('welcome'); // ឬ view('index')
+})->name('home');
+
+Route::get('/lookup', [App\Http\Controllers\PublicLookupController::class, 'show'])
+    ->name('public.lookup');
 
 
 // Telegram webhook (POST only)
@@ -61,25 +67,28 @@ Route::middleware('auth')->group(function () {
     | ADMIN
     |--------------------------------------------------------------------------
     */
-    // Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
 
-    //     // Reset password / PIN
-    //     Route::get('/reset', [AdminResetController::class, 'show'])->name('reset.show');
-    //     Route::post('/reset-password', [AdminResetController::class, 'resetPassword'])->name('reset.password');
-    //     Route::post('/reset-pin', [AdminResetController::class, 'resetPin'])->name('reset.pin');
+        // Admin Dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    //     // Users CRUD (optional)
-    //     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
-    //     Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
-    //     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
-    //     Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
-    //     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
-    //     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+        // Reset password / PIN
+        Route::get('/reset', [AdminResetController::class, 'show'])->name('reset.show');
+        Route::post('/reset-password', [AdminResetController::class, 'resetPassword'])->name('reset.password');
+        Route::post('/reset-pin', [AdminResetController::class, 'resetPin'])->name('reset.pin');
 
-    //     // Link parent -> student
-    //     Route::post('/parents/{user}/link-student', [UserManagementController::class, 'linkStudent'])
-    //         ->name('parents.linkStudent');
-    // });
+        // Users CRUD (optional)
+        // Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        // Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
+        // Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
+        // Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+        // Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
+        // Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+
+        // // Link parent -> student
+        // Route::post('/parents/{user}/link-student', [UserManagementController::class, 'linkStudent'])
+        //     ->name('parents.linkStudent');
+    });
 
     /*
     |--------------------------------------------------------------------------
