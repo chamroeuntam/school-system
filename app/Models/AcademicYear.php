@@ -9,6 +9,12 @@ class AcademicYear extends Model
 {
     protected $fillable = ['name','start_date','end_date','is_current'];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'is_current' => 'boolean',
+    ];
+
     public function classes(): HasMany
     {
         return $this->hasMany(SchoolClass::class);

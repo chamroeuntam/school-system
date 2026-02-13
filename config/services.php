@@ -38,9 +38,9 @@ return [
     'telegram' => [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
     ],
-    
+
     'google' => [
-        'service_account_json' => env('GOOGLE_SERVICE_ACCOUNT_JSON'),
+        'service_account_json' => storage_path('app/google-sheets.json'),
     ],
 
 

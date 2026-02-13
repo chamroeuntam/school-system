@@ -13,14 +13,14 @@
     border-radius: 18px;
     padding: 14px;
   }
-  .card h3{margin:0; font-size:14px; font-weight:800;}
-  .muted{color: rgba(168,179,207,.95); font-weight:600;}
+  .card h3{margin:0; font-size:15px; font-weight:800;}
+  .muted{color: rgba(168,179,207,.95); font-weight:600; font-size:14px;}
   .kpi{
     display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
   }
-  .kpi .value{font-size:26px; font-weight:900; letter-spacing:.3px; margin-top:6px;}
+  .kpi .value{font-size:28px; font-weight:900; letter-spacing:.3px; margin-top:8px;}
   .kpi .badge{
-    font-size:12px; font-weight:800;
+    font-size:13px; font-weight:800;
     padding:6px 10px; border-radius:999px;
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.06);
@@ -33,10 +33,10 @@
   .row{display:flex; align-items:center; justify-content:space-between; gap:12px;}
   .btn-soft{
     display:inline-flex; align-items:center; gap:8px;
-    padding:10px 12px; border-radius:14px;
+    padding:11px 14px; border-radius:14px;
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.06);
-    color: #eaf0ff; font-weight:800;
+    color: #eaf0ff; font-weight:800; font-size:14px;
     text-decoration:none;
     transition: transform .15s ease, background .15s ease;
   }
@@ -53,7 +53,7 @@
   }
   .table th{
     text-align:left;
-    font-size:12px;
+    font-size:13px;
     color: rgba(168,179,207,.95);
     font-weight:900;
     padding: 0 10px;
@@ -64,6 +64,7 @@
     border:1px solid rgba(255,255,255,.10);
     border-left:none; border-right:none;
     font-weight:700;
+    font-size: 15px;
   }
   .table tr td:first-child{
     border-left:1px solid rgba(255,255,255,.10);
@@ -101,15 +102,15 @@
     background: rgba(6,182,212,1);
     box-shadow: 0 0 0 6px rgba(6,182,212,.12);
   }
-  .item b{font-weight:900;}
-  .item small{display:block; margin-top:4px; color: rgba(168,179,207,.95); font-weight:600;}
+  .item b{font-weight:900; font-size:15px;}
+  .item small{display:block; margin-top:4px; color: rgba(168,179,207,.95); font-weight:600; font-size:13px;}
 
   .section-title{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
-    margin-bottom:10px;
+    margin-bottom:14px;
   }
-  .section-title h2{margin:0; font-size:14px; font-weight:900;}
-  .section-title a{font-size:12px; color: rgba(234,240,255,.9); font-weight:800; text-decoration:none; opacity:.9;}
+  .section-title h2{margin:0; font-size:16px; font-weight:900;}
+  .section-title a{font-size:13px; color: rgba(234,240,255,.9); font-weight:800; text-decoration:none; opacity:.9;}
   .section-title a:hover{opacity:1; text-decoration:underline;}
 
   @media (max-width: 1100px){
@@ -127,10 +128,10 @@
     <div class="kpi">
       <div>
         <h3><i class="fas fa-user-graduate"></i> សិស្សសរុប</h3>
-        <div class="value">{{ $totalStudents ?? 1250 }}</div>
+        <div class="value">{{ $totalStudents ?? 0 }}</div>
         <div class="muted">បច្ចុប្បន្នឆ្នាំសិក្សា</div>
       </div>
-      <span class="badge info">+{{ $studentsNewThisMonth ?? 32 }} ខែនេះ</span>
+      <span class="badge info">+{{ $studentsNewThisMonth ?? 0 }} ខែនេះ</span>
     </div>
   </div>
 
@@ -138,7 +139,7 @@
     <div class="kpi">
       <div>
         <h3><i class="fas fa-chalkboard-teacher"></i> គ្រូបង្រៀន</h3>
-        <div class="value">{{ $totalTeachers ?? 58 }}</div>
+        <div class="value">{{ $totalTeachers ?? 0 }}</div>
         <div class="muted">គ្រូ/បុគ្គលិក</div>
       </div>
       <span class="badge success">Active</span>
@@ -149,15 +150,15 @@
     <div class="kpi">
       <div>
         <h3><i class="fas fa-calendar-check"></i> វត្តមានថ្ងៃនេះ</h3>
-        <div class="value">{{ $attendanceTodayPercent ?? 93 }}%</div>
+        <div class="value">{{ $attendanceTodayPercent ?? 0 }}%</div>
         <div class="muted">សិស្សមករៀន</div>
       </div>
-      <span class="badge {{ ($attendanceTodayPercent ?? 93) >= 90 ? 'success' : 'warn' }}">
-        {{ ($attendanceTodayPercent ?? 93) >= 90 ? 'ល្អ' : 'ត្រូវពិនិត្យ' }}
+      <span class="badge {{ ($attendanceTodayPercent ?? 0) >= 90 ? 'success' : 'warn' }}">
+        {{ ($attendanceTodayPercent ?? 0) >= 90 ? 'ល្អ' : 'ត្រូវពិនិត្យ' }}
       </span>
     </div>
     <div style="margin-top:10px" class="progress">
-      <div style="width: {{ $attendanceTodayPercent ?? 93 }}%"></div>
+      <div style="width: {{ $attendanceTodayPercent ?? 0 }}%"></div>
     </div>
   </div>
 
@@ -165,7 +166,7 @@
     <div class="kpi">
       <div>
         <h3><i class="fas fa-clipboard-list"></i> ពិន្ទុកំពុងបញ្ចូល</h3>
-        <div class="value">{{ $pendingGrades ?? 12 }}</div>
+        <div class="value">{{ $pendingGrades ?? 0 }}</div>
         <div class="muted">ចាំបញ្ចប់/ពិនិត្យ</div>
       </div>
       <span class="badge warn">Pending</span>
@@ -182,7 +183,7 @@
     </div>
 
     <div style="display:flex; flex-wrap:wrap; gap:10px;">
-      <a class="btn-soft btn-primary" href="/admin/students/create">
+      <a class="btn-soft btn-primary" href="/admin/students?create=1">
         <i class="fas fa-user-plus"></i> បន្ថែមសិស្ស
       </a>
       <a class="btn-soft" href="/admin/teachers/create">
@@ -200,6 +201,14 @@
       <a class="btn-soft" href="/admin/reports">
         <i class="fas fa-file-lines"></i> របាយការណ៍
       </a>
+      @isset($sheetSource)
+        <form method="POST" action="{{ route('admin.sheet.sync', $sheetSource) }}">
+          @csrf
+          <button class="btn-soft btn-primary" type="submit">
+            <i class="fas fa-rotate"></i> Sync Sheet
+          </button>
+        </form>
+      @endisset
     </div>
 
     <div style="margin-top:12px" class="muted">
@@ -235,7 +244,74 @@
   </div>
 </div>
 
-{{-- Attendance Overview + Recent Activity --}}
+{{-- Announcements + Recent Activity --}}
+<div class="grid grid-2" style="margin-top:14px;">
+  <div class="card">
+    <div class="section-title">
+      <h2><i class="fas fa-bullhorn"></i> មតិប្រកាស (Today)</h2>
+      <a href="/admin/announcements">គ្រប់គ្រង →</a>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="table" style="margin:0;">
+        <thead>
+          <tr>
+            <th style="font-size:13px; padding:8px 10px;">ឈ្មោះ</th>
+            <th style="font-size:13px; padding:8px 10px;">មតិប្រកាស</th>
+            <th style="font-size:13px; padding:8px 10px;">ពីកោ</th>
+            <th style="font-size:13px; padding:8px 10px;">វេលាយ</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse($recentAnnouncements as $ann)
+            <tr>
+              <td style="font-size:13px; padding:8px 10px;"><b>-</b></td>
+              <td style="font-size:13px; padding:8px 10px;">{{ Str::limit($ann->message, 50) }}</td>
+              <td style="font-size:13px; padding:8px 10px;">{{ $ann->user->name ?? 'Admin' }}</td>
+              <td style="font-size:13px; padding:8px 10px;"><small>{{ $ann->published_at->diffForHumans() }}</small></td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="4" style="text-align:center; padding:20px; font-size:13px;">
+                <span style="color: rgba(168,179,207,.6);">មិនទានមតិប្រកាស</span>
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">
+      <h2><i class="fas fa-clock"></i> Recent Activity</h2>
+      <a href="/admin/logs">មើលទាំងអស់ →</a>
+    </div>
+
+    <div class="list">
+      @php
+        $activities = $recentActivities ?? [
+          ['title'=>'គ្រូ សុខា បញ្ចូលវត្តមាន (11A)', 'time'=>'5 នាទីមុន'],
+          ['title'=>'Admin Reset PIN អាណាព្យាបាល (ID: 1023)', 'time'=>'20 នាទីមុន'],
+          ['title'=>'បញ្ចូលពិន្ទុប្រចាំខែ (10B)', 'time'=>'1 ម៉ោងមុន'],
+          ['title'=>'បន្ថែមសិស្សថ្មី: ចាន់សុវណ្ណ', 'time'=>'ម្សិលមិញ'],
+        ];
+      @endphp
+
+      @foreach($activities as $a)
+        <div class="item">
+          <span class="dot"></span>
+          <div>
+            <b>{{ $a['title'] }}</b>
+            <small>{{ $a['time'] }}</small>
+          </div>
+        </div>
+      @endforeach
+    </div>
+  </div>
+</div>
+
+{{-- Attendance Overview + by Class --}}
 <div class="grid grid-2" style="margin-top:14px;">
   <div class="card">
     <div class="section-title">
@@ -281,61 +357,5 @@
       </tbody>
     </table>
   </div>
-
-  <div class="card">
-    <div class="section-title">
-      <h2><i class="fas fa-clock"></i> Recent Activity</h2>
-      <a href="/admin/logs">មើលទាំងអស់ →</a>
-    </div>
-
-    <div class="list">
-      @php
-        $activities = $recentActivities ?? [
-          ['title'=>'គ្រូ សុខា បញ្ចូលវត្តមាន (11A)', 'time'=>'5 នាទីមុន'],
-          ['title'=>'Admin Reset PIN អាណាព្យាបាល (ID: 1023)', 'time'=>'20 នាទីមុន'],
-          ['title'=>'បញ្ចូលពិន្ទុប្រចាំខែ (10B)', 'time'=>'1 ម៉ោងមុន'],
-          ['title'=>'បន្ថែមសិស្សថ្មី: ចាន់សុវណ្ណ', 'time'=>'ម្សិលមិញ'],
-        ];
-      @endphp
-
-      @foreach($activities as $a)
-        <div class="item">
-          <span class="dot"></span>
-          <div>
-            <b>{{ $a['title'] }}</b>
-            <small>{{ $a['time'] }}</small>
-          </div>
-        </div>
-      @endforeach
-    </div>
-  </div>
-</div>
-
-{{-- Announcements --}}
-<div class="card" style="margin-top:14px;">
-  <div class="section-title">
-    <h2><i class="fas fa-bullhorn"></i> សេចក្តីជូនដំណឹង</h2>
-    <a href="/admin/announcements">គ្រប់គ្រង →</a>
-  </div>
-
-  <div class="list">
-    @php
-      $ann = $announcements ?? [
-        ['title'=>'ប្រឡងសម័យទី១ ចាប់ផ្តើមសប្ដាហ៍ក្រោយ', 'time'=>'ថ្ងៃនេះ'],
-        ['title'=>'សូមគ្រូបញ្ចូលពិន្ទុមុនថ្ងៃសុក្រ', 'time'=>'2 ថ្ងៃមុន'],
-      ];
-    @endphp
-
-    @foreach($ann as $x)
-      <div class="item">
-        <span class="dot" style="background: rgba(79,70,229,1); box-shadow: 0 0 0 6px rgba(79,70,229,.12);"></span>
-        <div>
-          <b>{{ $x['title'] }}</b>
-          <small>{{ $x['time'] }}</small>
-        </div>
-      </div>
-    @endforeach
-  </div>
-</div>
 
 @endsection

@@ -16,7 +16,7 @@
   <style>
     :root{
       --bg: #0b1020;
-      --card: rgba(255,255,255,.06);
+        font-family:"Google Sans","Noto Sans Khmer",system-ui,Arial,sans-serif;
       --card2: rgba(255,255,255,.08);
       --border: rgba(255,255,255,.10);
       --text:#eaf0ff;
@@ -27,18 +27,41 @@
       --radius: 18px;
     }
 
+      input, select, textarea, button{ font: inherit; }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+    html{
+      background: #070a14;
+    }
     body{
       margin:0;
       font-family:"Google Sans",system-ui,Arial,sans-serif;
       color:var(--text);
+      font-size: 15px;
+      line-height: 1.5;
       background:
         radial-gradient(1200px 700px at 15% 10%, rgba(79,70,229,.35) 0%, transparent 60%),
         radial-gradient(900px 600px at 95% 25%, rgba(6,182,212,.25) 0%, transparent 60%),
-        linear-gradient(180deg, #070a14 0%, #0b1020 100%);
+        linear-gradient(180deg, #070a14 0%, #070a14 100%);
+      background-repeat: no-repeat;
       min-height:100vh;
+      min-height:100svh;
+      min-height:100dvh;
     }
+
+    /* ====== Font Size Utilities ====== */
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.2;
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
+    .text-xs { font-size: 11px; line-height: 1.4; }
+    .text-sm { font-size: 13px; line-height: 1.4; }
+    .text-base { font-size: 15px; line-height: 1.5; }
+    .text-lg { font-size: 16px; line-height: 1.5; }
+    .text-xl { font-size: 18px; line-height: 1.5; }
+    .text-2xl { font-size: 22px; line-height: 1.3; font-weight: 800; }
+    .text-3xl { font-size: 28px; line-height: 1.2; font-weight: 900; }
 
     /* ====== Layout ====== */
     .app{
@@ -106,6 +129,12 @@
     .nav{
       padding: 12px 10px 14px;
       overflow:auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .nav::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     .nav-section{
@@ -170,7 +199,7 @@
       width:10px; height:10px;
       border-radius: 999px;
       background: var(--success);
-      box-shadow: 0 0 0 6px rgba(34,197,94,.15);
+      box-shadow: 0 0 0 6px rgba(0, 255, 94, 0.949);
     }
     .mini-card .txt{
       line-height:1.2;
@@ -208,14 +237,14 @@
     }
     .topbar h2{
       margin:0;
-      font-size:16px;
+      font-size: 18px;
       font-weight:800;
       letter-spacing:.2px;
     }
     .topbar p{
       margin:0;
       color:var(--muted);
-      font-size:12px;
+      font-size: 13px;
       font-weight:600;
     }
 
@@ -244,6 +273,7 @@
       color: var(--text);
       font: inherit;
       font-weight:600;
+      font-size: 14px;
     }
     .search input::placeholder{ color: rgba(168,179,207,.75); }
 
@@ -252,6 +282,7 @@
       background: rgba(255,255,255,.06);
       color: var(--text);
       font-weight:800;
+      font-size: 14px;
       padding:10px 12px;
       border-radius: 14px;
       cursor:pointer;
@@ -262,6 +293,49 @@
     .page{
       padding: 16px;
       overflow:auto;
+    }
+
+    /* ====== Modern Selects ====== */
+    .content select,
+    .content .select{
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background:
+        linear-gradient(135deg, rgba(79,70,229,.12), rgba(6,182,212,.08)),
+        rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.16);
+      color: var(--text);
+      padding: 10px 38px 10px 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'><path d='M5 7l5 6 5-6' stroke='%23eaf0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 16px;
+    }
+
+    .content select:focus,
+    .content .select:focus{
+      outline: none;
+      border-color: rgba(99,102,241,.7);
+      box-shadow:
+        0 0 0 3px rgba(99,102,241,.18),
+        inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .content select:disabled,
+    .content .select:disabled{
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .content select option,
+    .content .select option{
+      background: #0e1426;
+      color: #eaf0ff;
     }
 
     /* ====== Mobile ====== */
@@ -304,6 +378,11 @@
         z-index: 40;
       }
       .overlay.show{ display:block; }
+      .topbar .left{
+        display:none;
+
+        gap:4px;
+        }
     }
   </style>
 </head>
@@ -339,21 +418,63 @@
           <span>ផ្ទាំងគ្រប់គ្រង</span>
         </a>
 
-         <a href="#" class="nav-link" data-path="/">
-          <i class="fas fa-users"></i>
-          <span>ផ្ទាំងគ្រប់គ្រងបុគ្គលិក</span>
+        @if(auth()->user()->isAdmin())
+        <a href="/admin/teachers" class="nav-link" data-path="/admin/teachers">
+          <i class="fas fa-user-tie"></i>
+          <span>គ្រូបង្រៀន</span>
         </a>
 
-         <a href="#" class="nav-link" data-path="/">
+         <a href="/admin/students" class="nav-link" data-path="/admin/students">
           <i class="fas fa-user-graduate"></i>
           <span>ផ្ទាំងគ្រប់គ្រងសិស្ស</span>
         </a>
 
+        <a href="/admin/classes" class="nav-link" data-path="/admin/classes">
+            <i class="fas fa-chalkboard"></i>
+            <span>ផ្ទាំងគ្រប់គ្រងថ្នាក់</span>
+        </a>
+
+        <a href="/admin/subjects" class="nav-link" data-path="/admin/subjects">
+          <i class="fas fa-book"></i>
+          <span>មុខវិជ្ជា</span>
+        </a>
+
+        <a href="/admin/subject-rules" class="nav-link" data-path="/admin/subject-rules">
+          <i class="fas fa-list-check"></i>
+          <span>ក្បួនពិន្ទុ</span>
+        </a>
+
+        <a href="{{ route('admin.terms.index') }}" class="nav-link" data-path="/admin/terms">
+          <i class="fas fa-calendar-alt"></i>
+          <span>ឆមាសសិក្សា</span>
+        </a>
+
+        <a href="{{ route('admin.scores.index') }}" class="nav-link" data-path="/admin/scores">
+          <i class="fas fa-chart-bar"></i>
+          <span>គ្រប់គ្រងពិន្ទុ</span>
+        </a>
+
+        <a href="{{ route('admin.sheet-sources.index') }}" class="nav-link" data-path="/admin/sheet-sources">
+          <i class="fas fa-file-lines"></i>
+          <span>ប្រភពសន្លឹកពិន្ទុ</span>
+        </a>
+
+        <a href="{{ route('admin.announcements.index') }}" class="nav-link" data-path="/admin/announcements">
+          <i class="fas fa-bullhorn"></i>
+          <span>មតិប្រកាស</span>
+        </a>
+
+        <a href="{{ route('admin.academic-years.index') }}" class="nav-link" data-path="/admin/academic-years">
+            <i class="fas fa-calendar"></i>
+            <span>ឆ្នាំសិក្សា</span>
+        </a>
 
         <a href="/admin/reset" class="nav-link" data-path="/admin/reset">
           <i class="fas fa-key"></i>
           <span>កំណត់ពាក្យសម្ងាត់ / PIN</span>
         </a>
+        @endif
+
 
         <div class="nav-section">System</div>
 
@@ -410,12 +531,7 @@
       <section class="page">
 
         @yield('content')
-        <div style="padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.05);">
-          <b style="display:block; margin-bottom:6px;">Content area</b>
-          <span style="color:rgba(168,179,207,.9); font-weight:600;">
-            ដាក់ content របស់អ្នកនៅទីនេះ (Dashboard cards, tables, etc.)
-          </span>
-        </div>
+
       </section>
     </main>
   </div>
