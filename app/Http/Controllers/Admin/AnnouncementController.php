@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,12 @@ class AnnouncementController extends Controller
 
         Announcement::create($validated);
 
+        Activity::log(
+            'announcement_created',
+            "Announcement created: {$validated['title']}",
+            auth()->id()
+        );
+
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Announcement created successfully!');
     }
@@ -73,6 +80,13 @@ class AnnouncementController extends Controller
 
         $announcement->update($validated);
 
+        Activity::log(
+            'announcement_updated',
+            "Announcement updated: {$announcement->title}",
+            auth()->id(),
+            $announcement
+        );
+
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Announcement updated successfully!');
     }
@@ -83,6 +97,12 @@ class AnnouncementController extends Controller
     public function destroy(Announcement $announcement)
     {
         $announcement->delete();
+
+        Activity::log(
+            'announcement_deleted',
+            "Announcement deleted: {$announcement->title}",
+            auth()->id()
+        );
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Announcement deleted successfully!');
     }

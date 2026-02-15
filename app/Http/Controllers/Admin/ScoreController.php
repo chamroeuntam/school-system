@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Activity;
 use App\Models\Score;
 use App\Models\Enrollment;
 use App\Models\Subject;
@@ -97,7 +98,7 @@ class ScoreController extends Controller
 
         $validated['recorded_by'] = auth()->id();
 
-        Score::updateOrCreate(
+        $score = Score::updateOrCreate(
             [
                 'enrollment_id' => $validated['enrollment_id'],
                 'subject_id' => $validated['subject_id'],
@@ -105,6 +106,17 @@ class ScoreController extends Controller
                 'exam_type' => $validated['exam_type'],
             ],
             $validated
+        );
+
+        $enrollment = Enrollment::with(['student', 'schoolClass'])->find($validated['enrollment_id']);
+        $studentName = $enrollment?->student?->full_name ?? 'Student';
+        $className = $enrollment?->schoolClass?->name ?? 'Unknown class';
+
+        Activity::log(
+            'score_saved',
+            "Score saved: {$studentName} ({$className})",
+            auth()->id(),
+            $score
         );
 
         return back()->with('success', 'ពិន្ទុត្រូវបានរក្សាទុក។');
@@ -128,11 +140,33 @@ class ScoreController extends Controller
 
         $score->update($validated);
 
+        $score->load(['enrollment.student', 'enrollment.schoolClass']);
+        $studentName = $score->enrollment?->student?->full_name ?? 'Student';
+        $className = $score->enrollment?->schoolClass?->name ?? 'Unknown class';
+
+        Activity::log(
+            'score_updated',
+            "Score updated: {$studentName} ({$className})",
+            auth()->id(),
+            $score
+        );
+
         return back()->with('success', 'ពិន្ទុត្រូវបានកែប្រែ។');
     }
 
     public function destroy(Score $score)
     {
+        $score->load(['enrollment.student', 'enrollment.schoolClass']);
+        $studentName = $score->enrollment?->student?->full_name ?? 'Student';
+        $className = $score->enrollment?->schoolClass?->name ?? 'Unknown class';
+
+        Activity::log(
+            'score_deleted',
+            "Score deleted: {$studentName} ({$className})",
+            auth()->id(),
+            $score
+        );
+
         $score->delete();
 
         return back()->with('success', 'ពិន្ទុត្រូវបានលុប។');
@@ -170,6 +204,7 @@ class ScoreController extends Controller
             return back()->with('error', $validationErrors[0]);
         }
 
+        $storedCount = 0;
         foreach ($validated['scores'] as $scoreData) {
             if (isset($scoreData['score']) && $scoreData['score'] !== '') {
                 Score::updateOrCreate(
@@ -184,7 +219,19 @@ class ScoreController extends Controller
                         'recorded_by' => auth()->id(),
                     ]
                 );
+                $storedCount++;
             }
+        }
+
+        if ($storedCount > 0) {
+            $subjectName = Subject::find($validated['subject_id'])?->name ?? 'Subject';
+            $termName = Term::find($validated['term_id'])?->name ?? 'Term';
+
+            Activity::log(
+                'scores_batch_saved',
+                "Scores batch saved: {$storedCount} entries ({$subjectName}, {$termName})",
+                auth()->id()
+            );
         }
 
         return back()->with('success', 'ពិន្ទុទាំងអស់ត្រូវបានរក្សាទុក។');

@@ -44,6 +44,7 @@ class PublicLookupController extends Controller
 
         // 📊 Get attendance (latest 30 days)
         $attendances = $enrollment->attendances()
+            ->with('subject')
             ->orderBy('attendance_date', 'desc')
             ->take(30)
             ->get();

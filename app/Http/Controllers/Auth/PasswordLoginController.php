@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class PasswordLoginController extends Controller
@@ -20,6 +21,7 @@ class PasswordLoginController extends Controller
 
         if ($user && password_verify($request->password, $user->password)) {
             Auth::login($user);
+            Activity::log('login', "Login: {$user->name} ({$user->role})", $user->id, $user);
             return redirect('/dashboard');
         }
         return back()->withErrors(['email' => 'Invalid credentials.']);

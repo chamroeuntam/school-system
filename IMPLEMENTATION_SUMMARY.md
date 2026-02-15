@@ -431,7 +431,7 @@ WHERE grade_level_id = X AND stream_id = Y AND subject_id = Z;
 - [ ] Webhook integration
 - [ ] Export scores back to sheet
 - [ ] Custom column mapping UI
-- [ ] Attendance sync support
+- [x] Attendance sync support
 - [ ] Import history/audit trail UI
 
 ---

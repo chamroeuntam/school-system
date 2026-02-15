@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,13 @@ class AdminResetController extends Controller
         $user->password = Hash::make($data['new_password']);
         $user->save();
 
+        Activity::log(
+            'admin_reset_password',
+            "Admin reset password for {$user->name} (ID: {$user->id})",
+            auth()->id(),
+            $user
+        );
+
         return back()->with('success', 'Password reset successful.');
     }
 
@@ -40,6 +48,13 @@ class AdminResetController extends Controller
         $user->pin()->updateOrCreate(
             ['user_id' => $user->id],
             ['pin_hash' => Hash::make($pin), 'expires_at' => null]
+        );
+
+        Activity::log(
+            'admin_reset_pin',
+            "Admin reset PIN for {$user->name} (ID: {$user->id})",
+            auth()->id(),
+            $user
         );
 
         // Show PIN to admin to print/share

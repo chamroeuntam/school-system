@@ -238,6 +238,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 14px;
+      align-items: start;
     }
     .announcement-card{
       border: 1px solid var(--border);
@@ -247,6 +248,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      height: auto;
       transition: transform .2s ease, box-shadow .2s ease;
     }
     .announcement-card:hover{
@@ -281,7 +283,7 @@
       font-size: 13px;
       color: rgba(168,179,207,.95);
       line-height: 1.6;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .announcement-footer{
       display: flex;
@@ -461,7 +463,7 @@
             <span class="announcement-badge"><i class="fas fa-star"></i> ថ្មី</span>
           </div>
           <p class="announcement-content">
-            {{ Str::limit($announcement->message, 120) }}
+            {!! nl2br(e($announcement->message)) !!}
           </p>
           <div class="announcement-footer">
             <span class="announcement-author">{{ $announcement->user->name ?? 'Admin' }}</span>

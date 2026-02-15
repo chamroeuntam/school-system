@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\ImportJob;
 use App\Models\ImportJobError;
 use App\Models\SheetSource;
@@ -43,7 +44,10 @@ class SheetSyncController extends Controller
                 $result = $attendanceImporter->import(
                     $rows,
                     auth()->id(),
-                    $sheetSource->school_class_id
+                    $sheetSource->school_class_id,
+                    $sheetSource->tab_name,
+                    $sheetSource->subject_id,
+                    null // session auto-detected from tab name
                 );
             } else {
                 \Log::info('Processing as scores');
@@ -83,11 +87,38 @@ class SheetSyncController extends Controller
             $sheetSource->update(['last_synced_at' => now()]);
             \Log::info('=== SYNC COMPLETE ===', ['success' => $result['ok'], 'failed' => $result['failed']]);
 
+            $typeLabel = strtolower($sheetSource->type) === 'attendance' ? 'attendance' : 'scores';
+            $classLabel = $sheetSource->schoolClass?->name ?? 'Unknown class';
+            Activity::log(
+                'sheet_sync',
+                "Sheet sync ({$typeLabel}): {$classLabel} - {$result['ok']} ok, {$result['failed']} failed",
+                auth()->id(),
+                $sheetSource,
+                ['ok' => $result['ok'], 'failed' => $result['failed']]
+            );
+
+            $flashKey = $result['failed'] > 0 ? 'error' : 'success';
+            $flashMsg = $result['failed'] > 0
+                ? "Sync completed with errors: {$result['ok']} ok, {$result['failed']} failed."
+                : "Sync done: {$result['ok']} rows imported, {$result['failed']} failed.";
+
             return back()
-                ->with('success', "Sync done: {$result['ok']} rows imported, {$result['failed']} failed.")
+                ->with($flashKey, $flashMsg)
                 ->with('sync_job_id', $job->id);
         } catch (\Throwable $e) {
             \Log::error('SYNC FAILED', ['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()]);
+
+            if (isset($sheetSource)) {
+                $typeLabel = strtolower($sheetSource->type) === 'attendance' ? 'attendance' : 'scores';
+                $classLabel = $sheetSource->schoolClass?->name ?? 'Unknown class';
+                Activity::log(
+                    'sheet_sync_failed',
+                    "Sheet sync failed ({$typeLabel}): {$classLabel}",
+                    auth()->id(),
+                    $sheetSource,
+                    ['error' => $e->getMessage()]
+                );
+            }
 
             if (isset($job)) {
                 $job->update(['status' => 'failed', 'message' => $e->getMessage()]);

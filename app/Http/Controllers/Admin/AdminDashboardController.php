@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Announcement;
 use App\Models\Attendance;
 use App\Models\SheetSource;
@@ -84,6 +85,10 @@ class AdminDashboardController extends Controller
             ->limit(2)
             ->get();
 
+        $recentActivities = Activity::orderByDesc('created_at')
+            ->limit(4)
+            ->get();
+
         return view('admin.dashboard', compact(
             'totalStudents',
             'studentsNewThisMonth',
@@ -94,7 +99,8 @@ class AdminDashboardController extends Controller
             'riskStudents',
             'attendanceByClass',
             'sheetSource',
-            'recentAnnouncements'
+            'recentAnnouncements',
+            'recentActivities'
         ));
     }
 }

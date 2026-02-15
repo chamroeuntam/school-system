@@ -156,6 +156,15 @@ Policy enforced via Laravel's authorization system.
 5. **Dashboard updates** "Last Synced" timestamp
 6. **Teacher sees** success/error message
 
+### Attendance Sheet Format (Date Columns)
+
+- Required headers: `student_code`, `full_name`
+- Use one column per date, header format: `YYYY-MM-DD`
+- Cell values: `1` (present), `P` (permission/excused), `L` (late), `A` (absent)
+- Each tab should represent a single subject (tab name = subject name)
+- **Session support**: Include "morning" or "evening" in tab name (e.g., "Math-Morning", "Physics-Evening")
+  - Khmer keywords also supported: "ព្រឹក" (morning), "ល្ងាច" (evening)
+
 ## 📊 Database Relations
 
 ### SheetSource Model

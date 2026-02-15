@@ -124,6 +124,12 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="sheet-card" style="border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10);">
+            <div style="font-weight:800; color:#fecaca;">{{ session('error') }}</div>
+        </div>
+    @endif
+
     @if ($syncJob)
         <div class="sheet-card" style="border-color: rgba(6,182,212,.35); background: rgba(6,182,212,.08);">
             <div style="font-weight:800; color:#9ae6ff;">Last Sync Details</div>

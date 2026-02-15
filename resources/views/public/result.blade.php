@@ -327,7 +327,32 @@
                 </div>
 
                 <div class="section">
-                    <h2>វត្តមាន 30 ថ្ងៃចុងក្រោយ</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h2 style="margin: 0;">វត្តមាន 30 ថ្ងៃចុងក្រោយ</h2>
+                        <div style="position: relative;">
+                            <select id="attendanceSubjectFilter" style="
+                                background: rgba(255,255,255,.08);
+                                border: 1px solid rgba(255,255,255,.15);
+                                color: var(--text);
+                                padding: 8px 32px 8px 12px;
+                                border-radius: 10px;
+                                font-size: 12px;
+                                font-weight: 700;
+                                cursor: pointer;
+                                appearance: none;
+                                outline: none;
+                            ">
+                                <option value="">គ្រប់មុខវិជ្ជា</option>
+                                @php
+                                    $attendanceSubjects = $attendances->pluck('subject.name', 'subject_id')->unique()->filter();
+                                @endphp
+                                @foreach($attendanceSubjects as $subjectId => $subjectName)
+                                    <option value="{{ $subjectId }}">{{ $subjectName }}</option>
+                                @endforeach
+                            </select>
+                            <i class="fa-solid fa-chevron-down" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 10px; color: var(--muted);"></i>
+                        </div>
+                    </div>
                     <div class="stat">
                         <div>
                             <div class="label">អត្រាវត្តមាន</div>
@@ -345,15 +370,33 @@
                                 <thead style="position: sticky; top: 0; background: rgba(15, 23, 42, .95); backdrop-filter: blur(8px); z-index: 1;">
                                     <tr>
                                         <th>កាលបរិច្ឆេទ</th>
+                                        <th>វេនសិក្សា</th>
+                                        <th>មុខវិជ្ជា</th>
                                         <th>ស្ថានភាព</th>
                                         <th>ចំណាំ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($attendances as $att)
-                                        <tr>
+                                        @php
+                                            $statusMap = [
+                                                'present' => 'វត្តមាន',
+                                                'absent' => 'អវត្តមាន',
+                                                'late' => 'យឺត',
+                                                'excused' => 'មានច្បាប់'
+                                            ];
+                                            $sessionMap = [
+                                                'morning' => 'ព្រឹក',
+                                                'evening' => 'ល្ងាច'
+                                            ];
+                                            $statusKh = $statusMap[$att->status] ?? ucfirst($att->status);
+                                            $sessionKh = $sessionMap[$att->session] ?? ucfirst($att->session);
+                                        @endphp
+                                        <tr class="attendance-row" data-subject-id="{{ $att->subject_id ?? '' }}">
                                             <td>{{ $att->attendance_date?->format('Y-m-d') }}</td>
-                                            <td>{{ ucfirst($att->status) }}</td>
+                                            <td>{{ $sessionKh }}</td>
+                                            <td>{{ $att->subject?->name ?? '-' }}</td>
+                                            <td>{{ $statusKh }}</td>
                                             <td>{{ $att->note ?? '-' }}</td>
                                         </tr>
                                     @endforeach
@@ -465,6 +508,19 @@ document.getElementById('subjectFilter')?.addEventListener('change', function() 
             block.style.display = 'none';
         } else {
             block.style.display = '';
+        }
+    });
+});
+
+document.getElementById('attendanceSubjectFilter')?.addEventListener('change', function() {
+    const selectedSubjectId = this.value;
+    const rows = document.querySelectorAll('.attendance-row');
+
+    rows.forEach(row => {
+        if (selectedSubjectId === '' || row.dataset.subjectId === selectedSubjectId) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
         }
     });
 });

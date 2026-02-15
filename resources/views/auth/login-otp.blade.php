@@ -259,6 +259,12 @@
       background: linear-gradient(135deg, var(--success), #16a34a);
       color:#052e14;
     }
+
+    .back{
+      position:absolute;
+      top:12px; left:12px;
+    }
+    
     .btn-ghost{
       width:auto;
       background: transparent;
@@ -267,6 +273,7 @@
       padding:8px 10px;
       font-size:12px;
       font-weight:700;
+
     }
 
     .row{
@@ -319,9 +326,15 @@
 
 <div class="wrap">
   <div class="card">
-
+    <div class="back">
+            <a href="{{ route('login.password') }}" class="btn btn-ghost">
+                ← ចូលប្រើដោយពាក្យសម្ងាត់
+            </a>
+        </div>
     <div class="card-header">
+
       <div class="brand">
+
         <div class="logo">
           @if(file_exists(public_path('storage/asset/school-logo.png')))
             <img src="{{ asset('storage/asset/school-logo.png') }}" alt="School Logo">

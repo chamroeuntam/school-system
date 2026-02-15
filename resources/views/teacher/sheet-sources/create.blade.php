@@ -158,7 +158,8 @@
             <ul>
                 <li>Share your Google Sheet with the service account email (see admin panel)</li>
                 <li>For score import: use exact subject names as column headers</li>
-                <li>For attendance import: use headers: student_code, date, status</li>
+                <li>For attendance import: use headers: student_code, full_name, and date columns (YYYY-MM-DD). Cells use 1/P/L/A</li>
+                <li>For attendance: include "morning" or "evening" in tab name (e.g., "Math-Morning", "Math-Evening")</li>
                 <li>Scores must be within subject rules</li>
                 <li>First row should contain headers</li>
             </ul>

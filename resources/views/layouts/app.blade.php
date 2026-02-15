@@ -441,7 +441,7 @@
 
         <a href="/admin/subject-rules" class="nav-link" data-path="/admin/subject-rules">
           <i class="fas fa-list-check"></i>
-          <span>ក្បួនពិន្ទុ</span>
+          <span>កំណត់ពិន្ទុ</span>
         </a>
 
         <a href="{{ route('admin.terms.index') }}" class="nav-link" data-path="/admin/terms">
@@ -456,12 +456,12 @@
 
         <a href="{{ route('admin.sheet-sources.index') }}" class="nav-link" data-path="/admin/sheet-sources">
           <i class="fas fa-file-lines"></i>
-          <span>ប្រភពសន្លឹកពិន្ទុ</span>
+          <span>Connect Sheet Sources</span>
         </a>
 
         <a href="{{ route('admin.announcements.index') }}" class="nav-link" data-path="/admin/announcements">
           <i class="fas fa-bullhorn"></i>
-          <span>មតិប្រកាស</span>
+          <span>Post Announcements</span>
         </a>
 
         <a href="{{ route('admin.academic-years.index') }}" class="nav-link" data-path="/admin/academic-years">

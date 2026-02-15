@@ -289,24 +289,23 @@
     </div>
 
     <div class="list">
-      @php
-        $activities = $recentActivities ?? [
-          ['title'=>'គ្រូ សុខា បញ្ចូលវត្តមាន (11A)', 'time'=>'5 នាទីមុន'],
-          ['title'=>'Admin Reset PIN អាណាព្យាបាល (ID: 1023)', 'time'=>'20 នាទីមុន'],
-          ['title'=>'បញ្ចូលពិន្ទុប្រចាំខែ (10B)', 'time'=>'1 ម៉ោងមុន'],
-          ['title'=>'បន្ថែមសិស្សថ្មី: ចាន់សុវណ្ណ', 'time'=>'ម្សិលមិញ'],
-        ];
-      @endphp
-
-      @foreach($activities as $a)
+      @forelse($recentActivities as $activity)
         <div class="item">
           <span class="dot"></span>
           <div>
-            <b>{{ $a['title'] }}</b>
-            <small>{{ $a['time'] }}</small>
+            <b>{{ $activity->title }}</b>
+            <small>{{ $activity->created_at?->diffForHumans() }}</small>
           </div>
         </div>
-      @endforeach
+      @empty
+        <div class="item">
+          <span class="dot"></span>
+          <div>
+            <b>No recent activity yet</b>
+            <small>Activity will appear here as users work</small>
+          </div>
+        </div>
+      @endforelse
     </div>
   </div>
 </div>

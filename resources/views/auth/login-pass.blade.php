@@ -245,7 +245,7 @@
 
 <div class="wrap">
     <div class="card">
-
+        
         <div class="card-header">
             <div class="brand">
                 <div class="logo">

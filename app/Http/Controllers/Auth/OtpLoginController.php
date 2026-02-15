@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Http\Request;
@@ -105,6 +106,7 @@ class OtpLoginController extends Controller
         }
 
         Auth::login($user);
+        Activity::log('login', "Login (OTP): {$user->name} ({$user->role})", $user->id, $user);
         session()->forget(['otp_phone','otp_last_sent_at']);
 
         if ($request->expectsJson()) {
